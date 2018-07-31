@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Archives: 2017 | Hexo</title>
+  <title>Morris遍历 | Hexo</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -59,7 +59,7 @@
 </head>
 
 <!--
-<body class="home-template">
+<body class="post-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -180,69 +180,131 @@
         <!-- ============================ Header & Logo bar =========================== -->
 
 
-      <!-- ============================ Hero Image =========================== -->
-
-<section id="hero" class="scrollme">
-    <div class="container-fluid element-img" style="background: url(/img/tag-bg.jpg) no-repeat center center fixed;background-size: cover">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
-                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
-                    <div>
-                        
-                        <h2>I'm <span>KK</span>.</h2>
-                        <p></p>
-                        
-                        <h2></h2>
-                        <p>-A programmer</p>
-                        
-
-                    </div>
-                </div>
-            </div>
-            <!-- // .col-md-12 -->
-        </div>
-        <div class="herofade beige-dk"></div>
-    </div>
-</section>
-
-<!-- Height spacing helper -->
-<div class="heightblock"></div>
-<!-- // End height spacing helper -->
-
-<!-- ============================ END Hero Image =========================== -->
-
-
-
-
-<section id="services">
+      
+<section id="intro">
     <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row boxes">
-                    
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/01/22/computer-system-roaming/">计算机系统漫游</a></h4>
-                            
-                            <p><time datetime="2017-01-22T14:50:00.000Z"><a href="/2017/01/22/computer-system-roaming/">2017-01-22</a></time></p>
-                        </div>
-                    
-                </div>
-            </div>    
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2018-07-31T07:50:00.000Z" itemprop="datePublished">
+          2018-07-31
+      </time>
+    
+    
+    | 
+    <a href='/tags/DataStructure/'>DataStructure</a>,
+    
+    <a href='/tags/Algorithm/'>Algorithm</a>
+    
+    
+</span>
+                <h1>Morris遍历</h1>
+            </div>
         </div>
-    </div>
-</section> 
+        <div class="col-md-8 col-md-offset-2">
+      		<ul>
+<li>Morris 遍历时间复杂度 O(n)，空间复杂度 O(1)。</li>
+<li>改写 Morris 遍历实现二叉树的前中后序遍历。</li>
+</ul>
+<a id="more"></a>
+<hr>
+<p>令 cur 为当前结点：</p>
+<ul>
+<li><p>当前结点无左子树，cur 向右移动；</p>
+</li>
+<li><p>当前结点有左子树，找到当前结点左子树最右的结点 mostRight</p>
+<p>i) 若mostRight-&gt;right = NULL ，令mostRight-&gt;right = cur，cur向左移动</p>
+<p>ii) 若mostRight-&gt;right = cur，令若mostRight-&gt;right = NULL，cur向右移动</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//递归版本的遍历本质</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">traversal</span><span class="params">(Node *head)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(head == <span class="literal">NULL</span>)</span><br><span class="line">    	<span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">// 1  cout &lt;&lt; head-&gt;value; pre</span></span><br><span class="line">    traversal(head-&gt;left);</span><br><span class="line">    <span class="comment">// 2  cout &lt;&lt; head-&gt;value; mid</span></span><br><span class="line">    traversal(head-&gt;right);</span><br><span class="line">    <span class="comment">// 3  cout &lt;&lt; head-&gt;value; post</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>递归的遍历即是3次来到当前节点的过程</p>
+</blockquote>
+<p>morris 遍历</p>
+<blockquote>
+<p>对于二叉树上的一个结点，如果它有左子树就会来到当前结点2次。如果当前结点没有左子树，则回来到该结点一次。利用左子树上最右结点的指向（NULL/CUR）来标记是第一次或是第二次达到该结点。由于每个节点都到达2次，时间复杂度为 O(n)，只用了额外的2个变量，空间复杂度为 O(1)。</p>
+</blockquote>
+<p>遍历实现：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MorrisTraversal</span><span class="params">(node *head)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    node *cur = head;</span><br><span class="line">    node *mostRight = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span>(cur != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        mostRight = head-&gt;left;</span><br><span class="line">        <span class="keyword">if</span>(mostRight != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            <span class="keyword">while</span>(mostRight-&gt;right != <span class="literal">NULL</span> &amp;&amp; mostRight-&gt;right != cur)&#123;</span><br><span class="line">                mostRight = mostRight-&gt;right;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//mostRight has been the most right node of head-&gt;left</span></span><br><span class="line">            <span class="keyword">if</span>(mostRight == <span class="literal">NULL</span>)&#123;<span class="comment">//第一次达到该结点</span></span><br><span class="line">                mostRight-&gt;right = cur;</span><br><span class="line">                cur = cur-&gt;left;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;<span class="comment">//第二次到达该结点</span></span><br><span class="line">                mostRight-&gt;right = <span class="literal">NULL</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        cur = cur-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Morris实现先序、中序和后序遍历：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MorrisPre</span><span class="params">(node *head)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    node *cur = head;</span><br><span class="line">    node *mostRight = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span>(cur != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        mostRight = head-&gt;left;</span><br><span class="line">        <span class="keyword">if</span>(mostRight != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            <span class="keyword">while</span>(mostRight-&gt;right != <span class="literal">NULL</span> &amp;&amp; mostRight-&gt;right != cur)&#123;</span><br><span class="line">                mostRight = mostRight-&gt;right;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//mostRight has been the most right node of head-&gt;left</span></span><br><span class="line">            <span class="keyword">if</span>(mostRight == <span class="literal">NULL</span>)&#123;<span class="comment">//第一次达到该结点</span></span><br><span class="line">                mostRight-&gt;right = cur;</span><br><span class="line">                <span class="built_in">cout</span> &lt;&lt; cur-&gt;val;<span class="comment">//有左子树的结点，第一次到达时打印</span></span><br><span class="line">                cur = cur-&gt;left;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span>&#123;<span class="comment">//第二次到达该结点</span></span><br><span class="line">                mostRight-&gt;right = <span class="literal">NULL</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; cur-&gt;val;<span class="comment">//没有左子树的结点直接打印</span></span><br><span class="line">        &#125;</span><br><span class="line">        cur = cur-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MorrisIn</span><span class="params">(node *head)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    node *cur = head;</span><br><span class="line">    node *mostRight = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span>(cur != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        mostRight = head-&gt;left;</span><br><span class="line">        <span class="keyword">if</span>(mostRight != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            <span class="keyword">while</span>(mostRight-&gt;right != <span class="literal">NULL</span> &amp;&amp; mostRight-&gt;right != cur)&#123;</span><br><span class="line">                mostRight = mostRight-&gt;right;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//mostRight has been the most right node of head-&gt;left</span></span><br><span class="line">            <span class="keyword">if</span>(mostRight == <span class="literal">NULL</span>)&#123;<span class="comment">//第一次达到该结点</span></span><br><span class="line">                mostRight-&gt;right = cur;</span><br><span class="line">                cur = cur-&gt;left;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span>&#123;<span class="comment">//第二次到达该结点</span></span><br><span class="line">                mostRight-&gt;right = <span class="literal">NULL</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; cur-&gt;val;<span class="comment">//只有结点第二次到达以及结点无左子树才会进行到这一步</span></span><br><span class="line">       	    cur = cur-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>后序相对复杂一些：核心思想即第二次达到自己时打印左子树上的右边界</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MorrisPost</span><span class="params">(node *head)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    node *cur = head;</span><br><span class="line">    node *mostRight = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span>(cur != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        mostRight = head-&gt;left;</span><br><span class="line">        <span class="keyword">if</span>(mostRight != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            <span class="keyword">while</span>(mostRight-&gt;right != <span class="literal">NULL</span> &amp;&amp; mostRight-&gt;right != cur)&#123;</span><br><span class="line">                mostRight = mostRight-&gt;right;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//mostRight has been the most right node of head-&gt;left</span></span><br><span class="line">            <span class="keyword">if</span>(mostRight == <span class="literal">NULL</span>)&#123;<span class="comment">//第一次达到该结点</span></span><br><span class="line">                mostRight-&gt;right = cur;</span><br><span class="line">                cur = cur-&gt;left;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span>&#123;<span class="comment">//第二次到达该结点</span></span><br><span class="line">                mostRight-&gt;right = <span class="literal">NULL</span>;</span><br><span class="line">                printEdge(cur-&gt;left);<span class="comment">//当结点第二次来到自己时，打印其左子树的右边界</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">        cur = cur-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">    printEdge(head);<span class="comment">//打印整棵树的右边界</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printEdge</span><span class="params">(node *head)</span></span>&#123;</span><br><span class="line">    node *tail = reverse(head);</span><br><span class="line">    node *cur = tail</span><br><span class="line">    <span class="keyword">while</span>(cur != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; cur-&gt;val;</span><br><span class="line">        cur = cur-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">    reverseEdge(tail);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverseEdge</span><span class="params">(node *head)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(head == <span class="literal">NULL</span>)</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">    node *pre = <span class="literal">NULL</span>;</span><br><span class="line">    node *cur = head;</span><br><span class="line">    node *next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span>(cur != <span class="literal">NULL</span>)&#123;</span><br><span class="line">    next = next-&gt;right;</span><br><span class="line">    cur-&gt;right = pre;</span><br><span class="line">    pre = cur;</span><br><span class="line">    cur = next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pre;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<section id="statement">
-    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
-        <div class="row">
-            <p>nice to meet you</p>
+            <div class="clearfix"></div>
+            <hr class="nogutter">
         </div>
+        <nav class="m-pagination col-md-8 col-md-offset-2 col-sm-24" role="pagination">
+    
+    <a class="pull-left" href="/2018/07/31/树形DP/" style="float: left;">
+        ← 
+    </a>
+    
+    
+    <a class="pull-right" href="/2017/01/22/computer-system-roaming/">
+        计算机系统漫游 →
+    </a>
+    
+</nav>
+
+        <div class="col-md-8 col-md-offset-2 col-sm-24"><script type="text/javascript">
+  /**
+   * 搜狐畅言
+   */
+
+  /*
+  document.write('<div id="SOHUCS" sid="' + window.location.pathname.slice(1) + '" ></div>');
+
+  window.onload = function () {
+    (function () {
+      var appid = 'cytXXXX';
+      var conf = 'prod_xxxxxxxxxxxxxxxxx';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      var loadJs = function (d, a, id) {
+        var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement;
+        var b = document.createElement("script");
+        b.setAttribute("type", "text/javascript");
+        b.setAttribute("charset", "UTF-8");
+        b.setAttribute("src", d);
+        if (id) {
+          b.setAttribute("id", id);
+        }
+        if (typeof a === "function") {
+          if (window.attachEvent) {
+            b.onreadystatechange = function () {
+              var e = b.readyState;
+              if (e === "loaded" || e === "complete") {
+                b.onreadystatechange = null;
+                a()
+              }
+            }
+          } else {
+            b.onload = a
+          }
+        }
+        c.appendChild(b)
+      };
+
+      loadJs("https://changyan.sohu.com/upload/changyan.js", function () {
+        window.changyan.api.config({
+          appid: appid,
+          conf: conf
+        })
+      });
+    })();
+  }
+  */
+
+</script>
+</div>
     </div>
 </section>
+
+
       
 <!-- ============================ Footer =========================== -->
 
