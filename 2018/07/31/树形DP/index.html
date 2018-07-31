@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Archives | Hexo</title>
+  <title>树形DP | Hexo</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -59,7 +59,7 @@
 </head>
 
 <!--
-<body class="home-template">
+<body class="post-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -180,87 +180,119 @@
         <!-- ============================ Header & Logo bar =========================== -->
 
 
-      <!-- ============================ Hero Image =========================== -->
-
-<section id="hero" class="scrollme">
-    <div class="container-fluid element-img" style="background: url(/img/tag-bg.jpg) no-repeat center center fixed;background-size: cover">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
-                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
-                    <div>
-                        
-                        <h2>I'm <span>KK</span>.</h2>
-                        <p></p>
-                        
-                        <h2></h2>
-                        <p>-A programmer</p>
-                        
-
-                    </div>
-                </div>
-            </div>
-            <!-- // .col-md-12 -->
-        </div>
-        <div class="herofade beige-dk"></div>
-    </div>
-</section>
-
-<!-- Height spacing helper -->
-<div class="heightblock"></div>
-<!-- // End height spacing helper -->
-
-<!-- ============================ END Hero Image =========================== -->
-
-
-
-
-<section id="services">
+      
+<section id="intro">
     <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row boxes">
-                    
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/07/31/树形DP/">树形DP</a></h4>
-                            
-                            <p><time datetime="2018-07-31T09:00:00.000Z"><a href="/2018/07/31/树形DP/">2018-07-31</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/07/31/Morris-Traversal/">Morris遍历</a></h4>
-                            
-                            <p><time datetime="2018-07-31T07:50:00.000Z"><a href="/2018/07/31/Morris-Traversal/">2018-07-31</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2017/01/22/computer-system-roaming/">计算机系统漫游</a></h4>
-                            
-                            <p><time datetime="2017-01-22T14:50:00.000Z"><a href="/2017/01/22/computer-system-roaming/">2017-01-22</a></time></p>
-                        </div>
-                    
-                </div>
-            </div>    
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2018-07-31T09:00:00.000Z" itemprop="datePublished">
+          2018-07-31
+      </time>
+    
+    
+    | 
+    <a href='/tags/Algorithm/'>Algorithm</a>
+    
+    
+</span>
+                <h1>树形DP</h1>
+            </div>
         </div>
-    </div>
-</section> 
+        <div class="col-md-8 col-md-offset-2">
+      		<p>树形DP简单来说即是父结点拿到子结点信息后，整合出自己的信息往上传递，信息不断复用。在解决这一类问题的时候，首先需要考虑可能性，左子树的可能性，右子树的可能性（或者所有子结点的可能性）以及加上当前结点后的可能性。根据这些可能性，列出向上传递过程中结点需要传递的信息有哪些，根据这些信息去构造一个结构/类returnData（囊括了数据成员和构造函数），在递归过程中我们需要考虑递归的终止条件，返回一个满足条件的基础returnData对象。</p>
+<a id="more"></a>
+<p>解决问题的代码大致分为三块：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(node *head)</span></span>&#123; <span class="keyword">return</span> process(head).mem;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">struct <span class="title">returnData</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">returnData <span class="title">process</span><span class="params">(node *head)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//递归终止条件</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//考虑可能性</span></span><br><span class="line"></span><br><span class="line">process(head-&gt;left);</span><br><span class="line"></span><br><span class="line">process(head-&gt;right);</span><br><span class="line"></span><br><span class="line"><span class="comment">//整合子结点信息为head的信息返回</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> returnData(...);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><ul>
+<li>Q1: 判断平衡二叉树 </li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">returnData</span> &#123;</span></span><br><span class="line">	returnData(<span class="keyword">int</span> a, <span class="keyword">bool</span> b) : height(a), isB(b)&#123;&#125;</span><br><span class="line">	<span class="keyword">int</span> height;</span><br><span class="line">	<span class="keyword">bool</span> isB;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//返回以head为头的子树，高度值和是否平衡的信息</span></span><br><span class="line"><span class="function">returnData <span class="title">process</span><span class="params">(node *head)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (head == <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> returnData(<span class="number">0</span>, <span class="literal">true</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	returnData left = process(head-&gt;left);</span><br><span class="line">	returnData right = process(head-&gt;right);</span><br><span class="line">	<span class="keyword">if</span> (!left.isB || !right.isB)</span><br><span class="line">		<span class="keyword">return</span> returnData(<span class="number">0</span>, <span class="literal">false</span>);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">abs</span>(left.height - right.height) &gt; <span class="number">1</span>)</span><br><span class="line">		<span class="keyword">return</span> returnData(<span class="number">-1</span>, <span class="literal">false</span>);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> returnData(max(left.height,right.height) + <span class="number">1</span>, <span class="literal">true</span>);<span class="comment">//在从底向上的过程中将新的信息保存记录下来再返回给上级</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isBT</span><span class="params">(node *head)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> process(head).isB;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>复杂度为O(n)</p>
+</blockquote>
+<ul>
+<li>Q2: 判断一棵二叉树的结点的最远距离</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxDist</span><span class="params">(node *head)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> process2(head).maxDist ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">returnData2</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> height;</span><br><span class="line">	<span class="keyword">int</span> maxDist;</span><br><span class="line">	returnData2(<span class="keyword">int</span> h, <span class="keyword">int</span> m) : height(h), maxDist(m)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//以head为头的最远距离和高度信息</span></span><br><span class="line"><span class="function">returnData2 <span class="title">process2</span><span class="params">(node *head)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (head == <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> returnData2(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	returnData2 left = process2(head-&gt;left);</span><br><span class="line">	returnData2 right = process2(head-&gt;right);</span><br><span class="line">	<span class="keyword">int</span> p1 = left.maxDist;<span class="comment">//maxDis在左子树上</span></span><br><span class="line">	<span class="keyword">int</span> p2 = right.maxDist;<span class="comment">//maxDist在右子树上</span></span><br><span class="line">	<span class="keyword">int</span> p3 = left.height + right.height + <span class="number">1</span>;<span class="comment">//从左子树离head最远的结点到右子树到head最远的结点的距离</span></span><br><span class="line">	<span class="keyword">int</span> h = max(left.height, right.height) + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">int</span> m =  max(max(p1, p2),p3);</span><br><span class="line">	<span class="keyword">return</span> returnData2(h, m);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Q3: 判断一棵树的最大搜索二叉子树的大小</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxSearchTreeSize</span><span class="params">(node *head)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> process4(head).maxSearchSize;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">returnData4</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> maxSearchSize;</span><br><span class="line">	<span class="keyword">bool</span> isAllSearch;</span><br><span class="line">	<span class="keyword">int</span> max;</span><br><span class="line">	<span class="keyword">int</span> min;</span><br><span class="line">	returnData4(<span class="keyword">int</span> maxSearchSize, <span class="keyword">bool</span> isAllSearch, <span class="keyword">int</span> max, <span class="keyword">int</span> min)</span><br><span class="line">		:maxSearchSize(maxSearchSize), isAllSearch(isAllSearch), max(max), min(min)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">returnData4 <span class="title">process4</span><span class="params">(node *head)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (head == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> returnData4(<span class="number">0</span>, <span class="literal">true</span>, INT_MIN, INT_MAX);</span><br><span class="line">	returnData4 leftData = process4(head-&gt;left);</span><br><span class="line">	returnData4 rightData = process4(head-&gt;right);</span><br><span class="line">	<span class="keyword">int</span> p1 = leftData.maxSearchSize;</span><br><span class="line">	<span class="keyword">int</span> p2 = rightData.maxSearchSize;</span><br><span class="line">	<span class="keyword">int</span> p3 = INT_MIN;</span><br><span class="line">	<span class="keyword">if</span> (leftData.isAllSearch &amp;&amp; </span><br><span class="line">		rightData.isAllSearch &amp;&amp; </span><br><span class="line">		head-&gt;val &gt; leftData.max </span><br><span class="line">		&amp;&amp; head-&gt;val &lt; rightData.min) &#123;</span><br><span class="line">		p3 = p1 + p2 + <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> maxSearchSize = max(max(p1, p2), p3);</span><br><span class="line">	<span class="keyword">bool</span> isAllSearch = (p3 == maxSearchSize) ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">int</span> maxm = max(max(leftData.max, rightData.max), head-&gt;val);</span><br><span class="line">	<span class="keyword">int</span> minm = min(min(leftData.min, rightData.min), head-&gt;val);</span><br><span class="line">	<span class="keyword">return</span> returnData4(maxSearchSize, isAllSearch, maxm, minm);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Q4: 员工聚会问题</p>
+<p><img src="/img/1533029493243.png" alt="1533029493243"></p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">employee</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> huo;</span><br><span class="line">	<span class="built_in">list</span>&lt;employee&gt; nexts;<span class="comment">//该员工的下属列表</span></span><br><span class="line">	employee(<span class="keyword">int</span> huo) : huo(huo) &#123;&#125;</span><br><span class="line">	<span class="comment">//employee &amp;operator=(employee &amp;e) &#123; return e; &#125;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getMaxhuo</span><span class="params">(employee boss)</span> </span>&#123;</span><br><span class="line">	returnData5 data = process5(boss);</span><br><span class="line">	<span class="keyword">return</span> max(data.lai_huo, data.bu_lai_huo);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//递归向上传递信息体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">returnData5</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> lai_huo;</span><br><span class="line">	<span class="keyword">int</span> bu_lai_huo;</span><br><span class="line">	returnData5(<span class="keyword">int</span> lai_huo, <span class="keyword">int</span> bu_lai_huo) : lai_huo(lai_huo), bu_lai_huo(bu_lai_huo)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//（考虑可能性，左树，右树，每个孩子，再加上自己）以boss为头的整棵子树得到boss来时最大活跃度，boss不来时最大活跃度</span></span><br><span class="line"><span class="function">returnData5 <span class="title">process5</span><span class="params">(<span class="keyword">const</span> employee &amp;boss)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (boss.nexts.empty()) &#123;</span><br><span class="line">		<span class="keyword">return</span> returnData5(boss.huo, <span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> lai_huo = boss.huo;</span><br><span class="line">	<span class="keyword">int</span> bu_lai_huo = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> it = boss.nexts.begin(); it != boss.nexts.end(); it++) &#123;</span><br><span class="line">		lai_huo += process5(*it).bu_lai_huo;<span class="comment">//boss来，员工都不来</span></span><br><span class="line">		bu_lai_huo += max(process5(*it).lai_huo, process5(*it).bu_lai_huo);<span class="comment">//boss不来，员工爱来不来，取最大的</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> returnData5(lai_huo, bu_lai_huo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>题目和图片取自《左程云的算法进阶班》</p>
 
-<section id="statement">
-    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
-        <div class="row">
-            <p>nice to meet you</p>
+            <div class="clearfix"></div>
+            <hr class="nogutter">
         </div>
+        <nav class="m-pagination col-md-8 col-md-offset-2 col-sm-24" role="pagination">
+    
+    
+    <a class="pull-right" href="/2018/07/31/Morris-Traversal/">
+        Morris遍历 →
+    </a>
+    
+</nav>
+
+        <div class="col-md-8 col-md-offset-2 col-sm-24"><script type="text/javascript">
+  /**
+   * 搜狐畅言
+   */
+
+  /*
+  document.write('<div id="SOHUCS" sid="' + window.location.pathname.slice(1) + '" ></div>');
+
+  window.onload = function () {
+    (function () {
+      var appid = 'cytXXXX';
+      var conf = 'prod_xxxxxxxxxxxxxxxxx';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      var loadJs = function (d, a, id) {
+        var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement;
+        var b = document.createElement("script");
+        b.setAttribute("type", "text/javascript");
+        b.setAttribute("charset", "UTF-8");
+        b.setAttribute("src", d);
+        if (id) {
+          b.setAttribute("id", id);
+        }
+        if (typeof a === "function") {
+          if (window.attachEvent) {
+            b.onreadystatechange = function () {
+              var e = b.readyState;
+              if (e === "loaded" || e === "complete") {
+                b.onreadystatechange = null;
+                a()
+              }
+            }
+          } else {
+            b.onload = a
+          }
+        }
+        c.appendChild(b)
+      };
+
+      loadJs("https://changyan.sohu.com/upload/changyan.js", function () {
+        window.changyan.api.config({
+          appid: appid,
+          conf: conf
+        })
+      });
+    })();
+  }
+  */
+
+</script>
+</div>
     </div>
 </section>
+
+
       
 <!-- ============================ Footer =========================== -->
 
